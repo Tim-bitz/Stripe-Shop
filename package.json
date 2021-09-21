@@ -1,0 +1,25 @@
+{
+  "name": "stripe-shop",
+  "version": "1.0.0",
+  "description": "a simple webshop with working stripe payment methods",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tim-bitz/Stripe-Shop.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tim-bitz/Stripe-Shop/issues"
+  },
+  "homepage": "https://github.com/Tim-bitz/Stripe-Shop#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.12",
+    "stripe": "^8.176.0"
+  }
+}
