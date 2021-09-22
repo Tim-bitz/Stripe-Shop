@@ -8,10 +8,38 @@
     <title>Document</title>
     <script src="https://js.stripe.com/v3/"></script>
     <script defer src="logic.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 
+    <header>
+        <div id="indexContainer">
+            <input placeholder="username" type="text">
+            <input placeholder="password" type="text">
+            <button>login</button>
+        </div>
+        <div>
+            <ul>
+                <li>
+                    <a href="index.html">Home</a>
+                </li>
+                <li>
+                    <a href="kundkorg">Cart</a>
+                </li>
+            </ul>
+        </div>
+    </header>
+
 <body>
-    <button id="testBtn">test</button>
+    <div class="productCard">
+        <h3>Liquid Ice</h3>
+        <div class="imgContainer">
+            <img src="./resources/kobu-agency-TWIRIAizZFU-unsplash.jpg" alt="Water">
+        </div>
+        <p>beskrivning</p>
+        <p>5 Kr</p>
+        <button id="testBtn">köp</button>
+    </div>
+
 </body>
 
 </html>

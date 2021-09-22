@@ -5,6 +5,7 @@ const stripe = require('stripe')(secretKey)
 
 const app = express()
 
+//global variabel senaste köpet
 
 app.get("/api", (req, res) => {
     res.status(200).send("Välkommen")
@@ -19,7 +20,7 @@ app.post("/api/session/new", async (req, res) => {
                 price_data: {
                     currency: "sek",
                     product_data: {
-                        name: "En upplevelse"
+                        name: "Water"
                     },
                     unit_amount: 500,
                 },
@@ -32,6 +33,11 @@ app.post("/api/session/new", async (req, res) => {
     })
     console.log(session)
     res.status(200).json({ id: session.id })
+
+    //if success från stripe
+        //skicka köpdata till kvitto.json
+        //rensa global variabel ""
+
 })
 
 app.use(express.static("public"))
