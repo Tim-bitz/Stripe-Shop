@@ -1,0 +1,43 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+header {
+  background-color: aqua;
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: row;
+  align-items: center;
+}
+
+ul {
+  display: flex;
+  flex-direction: row;
+  list-style-type: none;
+}
+
+li a {
+  display: block;
+  padding: 14px 16px;
+  background-color: blueviolet;
+}
+
+img {
+  height: 100%;
+  width: 100%;
+}
+
+.productCard {
+  width: 300px;
+  background-color: brown;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.imgContainer {
+  width: 50%;
+}
