@@ -1,8 +1,6 @@
 const publicKey = "pk_test_51Jc4KaFYrsT4JzuLnxfWccQV75y84ogkUy5ptJoxmDaja5LIaydegbHC3I8kszcwiuHrWMa4XOsI6DwEFzsBlcGF00RMkCDsNF"
 //const sessionId = localStorage.getItem(session)
 
-
-
 let cart = []
 
 let testCart = [
@@ -103,7 +101,6 @@ async function verify() {
     }
 }
 
-
 let quantity = 0
 function addProduct(){   
     quantity++
@@ -130,7 +127,6 @@ async function main(){
     document.getElementById('checkOutBtn').addEventListener('click', ()=> checkout())
     //console.log("isVerified", isVerified)
     localStorage.removeItem("session")
-
 } 
 
 main()

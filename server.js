@@ -48,6 +48,7 @@ app.post("/api/session/new/", async (req, res) => {
   
 
   let item = JSON.stringify
+
     const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
         line_items:[
@@ -89,8 +90,6 @@ app.post("/api/session/verify/:id", async (req, res) => {
         key = session.payment_intent
         if(!jsonDB[key]) {
             jsonDB[key] = session
-            // endpoint post
-            
         }
         
         res.status(200).json({ verified: true})
@@ -136,21 +135,3 @@ app.post('/api/recet', (req, res) => {
     }
 
 })
-
-
-/* if(jsonDB[key]){
-    jsonDB[key] = sesson;
-}
-res.status(200).json()
-else{
-
-} */
-
-
-/* 
-
-session = data för att skapa order
-objekt skicka in i json filen
-
-
-*/
