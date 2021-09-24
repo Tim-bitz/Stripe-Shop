@@ -1,6 +1,8 @@
 const publicKey = "pk_test_51Jc4KaFYrsT4JzuLnxfWccQV75y84ogkUy5ptJoxmDaja5LIaydegbHC3I8kszcwiuHrWMa4XOsI6DwEFzsBlcGF00RMkCDsNF"
 //const sessionId = localStorage.getItem(session)
 
+
+
 let cart = []
 
 let testCart = [
@@ -15,7 +17,6 @@ let testCart = [
     }
 }}
 ]
-
 
 let stripe = Stripe(publicKey)
 //document.getElementById("testBtn").addEventListener("click", async () => {
@@ -102,13 +103,34 @@ async function verify() {
     }
 }
 
-async function main(){
-    
-    document.getElementById('checkOutBtn').addEventListener('click', ()=> checkout())
-    const isVerified = await verify();
-    console.log("isVerified", isVerified)
 
+let quantity = 0
+function addProduct(){   
+    quantity++
+    cart = {'Liquid Ice':{
+        name:"Liquid Ice",
+        description:'boxed in liquid form',
+        price_data:{
+            currency:'sek',
+            product_data:{
+                name: 'boxedIce'
+            },
+            unit_amount:quantity
+        }
+    }} 
+    let getCart = localStorage.getItem('cart')
+
+    let setCart = localStorage.setItem("cart",JSON.stringify(cart))
+    
+}
+
+
+async function main(){
+    //document.getElementById('addbtn').addEventListener('click', addProduct)
+    document.getElementById('checkOutBtn').addEventListener('click', ()=> checkout())
+    //console.log("isVerified", isVerified)
     localStorage.removeItem("session")
+
 } 
 
 main()
