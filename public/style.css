@@ -16,6 +16,7 @@ body{
   display: flex;
   flex-direction: column;
   justify-content: center;
+  background-color:whitesmoke;
 }
 ul {
   display: flex;
@@ -34,11 +35,35 @@ img {
   width: 100%;
 }
 
+input{
+  font-size:100%;
+  padding:5px;
+  outline: none;
+}
+
 button{
   padding:10px 14px;
+  border:none;
+  background-color: rgb(112, 191, 255);
+  transition: 0.8s;
+}
+
+button:hover{
+  cursor: pointer;
+  background-color: rgb(0, 93, 170);
+}
+
+#checkoutBtn{
+  width:200px;
+}
+#checkoutBtn:hover, #checkOutBtn:hover{
+  background-color:rgb(28, 206, 132);
+}
+
+#removebtn:hover{
+  background-color: firebrick;
 }
 .productCard {
-  width: 300px;
   background-color: brown;
   display: flex;
   justify-content: center;
@@ -50,22 +75,24 @@ button{
   width: 50%;
 }
 
-
 #mainContainer{
   width: 100%;
   display: flex;
   justify-content: center;
-  /* padding:10px; */
   background-color:whitesmoke;
 }
 
 #cardDiv{
-  width:50%;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width:100%;
   padding:10px;
 }
 
 #produktdiv{
-  width:100%;
+  width:600px;
 } 
 
 #productCard{
