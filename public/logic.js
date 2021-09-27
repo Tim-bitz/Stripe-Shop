@@ -29,12 +29,12 @@ let stripe = Stripe(publicKey)
 } */
 
 const productsDB = {
-    "liquidIce": {
+    "LiquidIce": {
         description: "En kul produkt som du bara måste ha",
         price_data: {
             currency: "sek",
             product_data: {
-                name: "liquidIce",
+                name: "LiquidIce",
                 metadata: {
                     img: "./resources/glassOfWater.jpg",
                 }
@@ -53,6 +53,19 @@ const productsDB = {
                 },
             },
             unit_amount: 45000,
+        }
+    },
+    "RedSoda": {
+        description: "Carbonated Liquid in the color of red",
+        price_data: {
+            currency: "sek",
+            product_data: {
+                name: "RedSoda",
+                metadata: {
+                    img: "./resources/sodaGlass.jpg",
+                },
+            },
+            unit_amount: 29900,
         }
     }
 }
@@ -82,6 +95,8 @@ function addProduct() {
 
 const addProduct = async (productKey) => {
     const product = productsDB[productKey];
+
+    console.log(product)
 
     if (!product) {
         throw new Error('Product does not Exist')
@@ -183,3 +198,4 @@ main()
     cart[productKey].quantity++;
     console.log({ cart, line_items: Object.values(testCart)})
 } */
+

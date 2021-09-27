@@ -14,7 +14,7 @@ app.use("/api", express.json())
     res.status[200].json(jsonDB)
 }) */
 
-const productsDB = {
+/* const productsDB = {
     'Liquid Ice': {
         description: 'Ice in liquid form',
         price_data: {
@@ -36,7 +36,7 @@ const productsDB = {
             unit_amount: 50000
         },
     }
-}
+} */
 
 
 //global variabel senaste köpet

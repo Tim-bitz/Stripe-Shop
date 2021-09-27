@@ -41,15 +41,15 @@ function productCard() {
 
         productImg.src = product.price_data.product_data.metadata.img
 
-        // productImg.src = "./resources/glassOfWater.jpg"
-
         produktTitle.style.borderBottom = "1px solid black"
         productCard.id = "productCard"
         produktTitle.innerText = product.price_data.product_data.name
         produktDesc.innerText = product.description
         produktPrice.innerText = "price: " + product.price_data.unit_amount / 100 + "kr"
+        produktPrice.style.padding = "10px 0px"
         addbtn.innerText = "add to cart"
         addbtn.id = "checkOutBtn"
+        addbtn.style.width = "100%"
         addbtn.addEventListener('click', () => {
             addProduct(product.price_data.product_data.name)
         })
@@ -94,6 +94,7 @@ function cartCard() {
         let produktTitle = document.createElement('h3')
         let produktAmount = document.createElement('p')
         let produktPrice = document.createElement('p')
+        let removebtn = document.createElement('button')
         let br = document.createElement("br")
 
         produktTitle.style.borderBottom = "1px solid black"
@@ -101,10 +102,17 @@ function cartCard() {
         produktAmount.innerText = "Amount: x" + item.quantity
         produktPrice.style.borderBottom = "1px solid black"
         produktPrice.innerText = "price: " + item.price_data.unit_amount / 100 + " kr"
+        removebtn.id = "removebtn"
+        removebtn.innerText = "Remove"
+        removebtn.addEventListener('click', () => {
+
+            cartItems.splice.item
+            console.log(cartItems)
+        })
 
         checkoutPrice = item.quantity * item.price_data.unit_amount / 100
 
-        produktdiv.append(produktTitle, produktAmount, produktPrice, br)
+        produktdiv.append(produktTitle, produktAmount, produktPrice, removebtn, br)
 
     }
 
