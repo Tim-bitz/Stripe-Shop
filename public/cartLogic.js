@@ -1,36 +1,124 @@
-function getProducts(){
+productCard()
+document.getElementById('homeBtn').addEventListener('click', productCard)
+document.getElementById('cartBtn').addEventListener('click', cartCard)
+
+
+function getProducts() {
     const getCartList = localStorage.getItem('cart')
-    
+
     let cartlist = JSON.parse(getCartList)
-    console.log(cartlist)
     return cartlist
 }
 
-function ProductCard(){
-     const product = getProducts()
-   /*  let produkt = cart.map((produkt)=>{
-        produkt.
-    }) */
-    let cartDiv = document.getElementById('cartcontainer')
+
+
+function productCard() {
+
+    const item = productsDB
+    let products = Object.values(item)
+
+    let cartDiv = document.getElementById('mainContainer')
+    cartDiv.innerHTML = ""
+
+    let cardDiv = document.createElement('div')
+    cardDiv.id = "cardDiv"
 
     let produktdiv = document.createElement('div')
-    produktdiv.id ="produktdiv"
+    produktdiv.id = "produktdiv"
 
-    let produktTitle = document.createElement('h3')
-    produktTitle.innerText = product.name + " Amount:" + product.amount + "st " + "price: " + product.price
+    for (let i = 0; i < products.length; i++) {
+        const product = products[i];
 
-    let produktAmount = document.createElement('p')
-    produktAmount.innerText = "nope"
+        let productCard = document.createElement('div')
+        let produktTitle = document.createElement('h3')
+        let productImg = document.createElement('img')
+        let produktDesc = document.createElement('p')
+        let produktPrice = document.createElement('p')
+        let br = document.createElement("br")
+        let addbtn = document.createElement('button')
 
-    document.getElementById("totalAmount").innerText = "total amount: " + product.amount* product.price + "sek"
+        productCard.style.borderBottom = "1px solid black"
 
- /*    let produktPrice = document.createElement('p')
-    produktPrice.innerText ="produkt price" */
+        productImg.src = product.price_data.product_data.metadata.img
+
+        // productImg.src = "./resources/glassOfWater.jpg"
+
+        produktTitle.style.borderBottom = "1px solid black"
+        productCard.id = "productCard"
+        produktTitle.innerText = product.price_data.product_data.name
+        produktDesc.innerText = product.description
+        produktPrice.innerText = "price: " + product.price_data.unit_amount / 100 + "kr"
+        addbtn.innerText = "add to cart"
+        addbtn.id = "checkOutBtn"
+        addbtn.addEventListener('click', () => {
+            addProduct(product.price_data.product_data.name)
+        })
 
 
-    produktdiv.appendChild(produktTitle, produktAmount)
-    cartDiv.appendChild(produktdiv)
+        productCard.append(productImg, produktTitle, produktDesc, br, produktPrice, addbtn, br)
+        produktdiv.append(productCard)
+    }
+
+    cardDiv.append(produktdiv)
+    cartDiv.appendChild(cardDiv)
+
 
 }
 
-ProductCard()
+
+function cartCard() {
+    let cartDiv = document.getElementById('mainContainer')
+    cartDiv.innerHTML = ""
+    const product = getProducts()
+    if (!product) {
+        let text = document.createElement('h3')
+        text.innerText = "There is nothing added to the cart"
+
+        cartDiv.append(text)
+        return
+    }
+    let cartItems = Object.values(product)
+
+
+    let cardDiv = document.createElement('div')
+    cardDiv.id = "cardDiv"
+
+    let produktdiv = document.createElement('div')
+    produktdiv.classList.add = "produktdiv"
+
+    let checkoutPrice
+
+    for (let i = 0; i < cartItems.length; i++) {
+        const item = cartItems[i];
+
+        let produktTitle = document.createElement('h3')
+        let produktAmount = document.createElement('p')
+        let produktPrice = document.createElement('p')
+        let br = document.createElement("br")
+
+        produktTitle.style.borderBottom = "1px solid black"
+        produktTitle.innerText = item.price_data.product_data.name
+        produktAmount.innerText = "Amount: x" + item.quantity
+        produktPrice.style.borderBottom = "1px solid black"
+        produktPrice.innerText = "price: " + item.price_data.unit_amount / 100 + " kr"
+
+        checkoutPrice = item.quantity * item.price_data.unit_amount / 100
+
+        produktdiv.append(produktTitle, produktAmount, produktPrice, br)
+
+    }
+
+
+    let priceTotal = document.createElement("div")
+    let checkoutBtn = document.createElement("button")
+
+    checkoutBtn.id = "checkoutBtn"
+
+    priceTotal.innerText = "Price Total: " + checkoutPrice
+    checkoutBtn.innerText = "Checkout"
+    checkoutBtn.addEventListener('click', () => checkout())
+
+    cardDiv.append(produktdiv, priceTotal, checkoutBtn)
+    cartDiv.appendChild(cardDiv)
+
+}
