@@ -7,40 +7,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://js.stripe.com/v3/"></script>
-    <script defer src="logic.js"></script>
+    <script defer src="./logic.js"></script>
+    <script defer src="./cartLogic.js"></script>
+    <script defer src="./login.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 
-    <header>
-        <div id="indexContainer">
-            <input placeholder="username" type="text">
-            <input placeholder="password" type="text">
-            <button>login</button>
-            <button id="test">test</button>
-        </div>
-        <div>
-            <ul>
-                <li>
-                    <a href="index.html">Home</a>
-                </li>
-                <li>
-                    <a href="kundkorg.html">Cart</a>
-                </li>
-            </ul>
-        </div>
-    </header>
+<header>
+    <div id="indexContainer">
+        <input placeholder="username" type="text">
+        <input placeholder="password" type="text">
+        <button>login</button>
+        <button id="test">test</button>
+    </div>
+    <div>
+        <ul>
+            <li>
+                <button id="homeBtn">Home</button>
+            </li>
+            <li>
+                <button id="cartBtn">Cart</button>
+            </li>
+        </ul>
+    </div>
+</header>
 
 <body>
-    <div class="productCard">
-        <h3>Liquid Ice</h3>
-        <div class="imgContainer">
-            <img src="./resources/kobu-agency-TWIRIAizZFU-unsplash.jpg" alt="Water">
-        </div>
-        <p>beskrivning</p>
-        <p>5 Kr</p>
-        <button onClick="addProduct()" id="addbtn">Add</button>
-    </div>
-    <button id="firstbtn">click me</button>
+    <section id="homePage">
+
+    </section>
+
+    <div id="mainContainer"></div>
 </body>
 
 </html>
