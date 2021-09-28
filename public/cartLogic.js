@@ -84,12 +84,13 @@ function cartCard() {
     cardDiv.id = "cardDiv"
 
     let produktdiv = document.createElement('div')
-    produktdiv.classList.add = "produktdiv"
+    produktdiv.id = "produktdiv"
 
     let checkoutPrice
 
     for (let i = 0; i < cartItems.length; i++) {
         const item = cartItems[i];
+        let product = document.createElement('div')
 
         let produktTitle = document.createElement('h3')
         let produktAmount = document.createElement('p')
@@ -97,24 +98,27 @@ function cartCard() {
         let removebtn = document.createElement('button')
         let br = document.createElement("br")
 
+        product.style.margin = "10% 0px"
+
+        produktTitle.style.marginTop = "20px"
         produktTitle.style.borderBottom = "1px solid black"
         produktTitle.innerText = item.price_data.product_data.name
         produktAmount.innerText = "Amount: x" + item.quantity
-        produktPrice.style.borderBottom = "1px solid black"
+        produktPrice.style.padding = "10px 0px "
         produktPrice.innerText = "price: " + item.price_data.unit_amount / 100 + " kr"
         removebtn.id = "removebtn"
         removebtn.innerText = "Remove"
         removebtn.addEventListener('click', () => {
-
-            cartItems.splice.item
             console.log(cartItems)
+
         })
 
         checkoutPrice = item.quantity * item.price_data.unit_amount / 100
-
-        produktdiv.append(produktTitle, produktAmount, produktPrice, removebtn, br)
+        product.append(produktTitle, produktAmount, produktPrice, removebtn, br)
+        produktdiv.append(product)
 
     }
+
 
 
     let priceTotal = document.createElement("div")
@@ -123,6 +127,7 @@ function cartCard() {
     checkoutBtn.id = "checkoutBtn"
 
     priceTotal.innerText = "Price Total: " + checkoutPrice
+    priceTotal.style.padding = "10px 0px"
     checkoutBtn.innerText = "Checkout"
     checkoutBtn.addEventListener('click', () => checkout())
 
