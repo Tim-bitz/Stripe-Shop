@@ -198,4 +198,19 @@ main()
     cart[productKey].quantity++;
     console.log({ cart, line_items: Object.values(testCart)})
 } */
+document.getElementById('SignUp').addEventListener('click', getNewCustomerValues)
+const userInfo = []
+function getNewCustomerValues() {
+    let userName = document.getElementById('username')
+    let passWord = document.getElementById('password')
+    let ePost = document.getElementById('epost')
+    let adress = document.getElementById('adress')
 
+    userInfo = [userName.value, passWord.value, ePost.value, adress.value]
+    console.log(userInfo)
+
+    userName.value = ""
+    passWord.value = ""
+    ePost.value = ""
+    adress.value = ""
+}
