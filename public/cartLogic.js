@@ -86,7 +86,7 @@ function cartCard() {
     let produktdiv = document.createElement('div')
     produktdiv.id = "produktdiv"
 
-    let checkoutPrice
+    let checkoutPrice = 0
 
     for (let i = 0; i < cartItems.length; i++) {
         const item = cartItems[i];
@@ -110,10 +110,9 @@ function cartCard() {
         removebtn.innerText = "Remove"
         removebtn.addEventListener('click', () => {
             console.log(cartItems)
-
+            
         })
-
-        checkoutPrice = item.quantity * item.price_data.unit_amount / 100
+        checkoutPrice += item.quantity * item.price_data.unit_amount / 100
         product.append(produktTitle, produktAmount, produktPrice, removebtn, br)
         produktdiv.append(product)
 
