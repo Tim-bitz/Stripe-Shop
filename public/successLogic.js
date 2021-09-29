@@ -13,7 +13,7 @@ async function success() {
     console.log(amountKey)
     const response = await fetch('/api/recet', {
         method: "POST",
-        headers: { 'Contenet-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             amountKey
         })
