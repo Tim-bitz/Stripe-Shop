@@ -51,6 +51,13 @@ function productCard() {
         addbtn.id = "checkOutBtn"
         addbtn.style.width = "100%"
         addbtn.addEventListener('click', () => {
+
+/*             if(gmklg){
+
+            }else{
+
+            } */
+
             addProduct(product.price_data.product_data.name)
         })
 

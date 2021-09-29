@@ -198,4 +198,3 @@ main()
     cart[productKey].quantity++;
     console.log({ cart, line_items: Object.values(testCart)})
 } */
-

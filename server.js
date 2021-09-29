@@ -131,10 +131,9 @@ app.post('/api/recet', (req, res) => {
 //login
 
 
-
 app.use(cookieSession({
     secret: '1234',
-    maxAge: 1000*10,
+    maxAge: 1000 * 10,
     sameSite: 'strict',
     httpOnly: true,
     secure: false
@@ -142,39 +141,67 @@ app.use(cookieSession({
 
 app.get('/api/users', (req, res) => {
     //res.json(users)
-    let  data = fs.readFileSync("./users.json")
+    let data = fs.readFileSync("./users.json")
     let userList = JSON.parse(data)
     userNames = userList.map(name => {
         return name.name
     })
     res.json(userNames)
-    
+
     //ska skicka tillbaka användarna från user.json
 })
 
 
 app.post('/api/users', async (req, res) => {
 
+    console.log(req.body)
+
     //hämta datan från users.json, spara i variablen users för att använda i följande if sats
 
-    let  rawData = fs.readFileSync("./users.json")
+    let rawData = fs.readFileSync("./users.json")
     let users = JSON.parse(rawData)
     console.log(users)
 
-    
+
     //kollar om användare finns
-    if(users.find(user => user.name === req.body.name)) {
+    if (users.find(user => user.name === req.body.name)) {
         //ska stämma av mot users.json genom en local users variabel
         return res.status(409).send('Username already in use')
     } else {
         //ska pusha in ny användare i users variabel och sedan skicka users till users.json 
-        /*  const hashedPassword = await bcrypt.hash(req.body.password, 10) */
-        
-        users.push({ name: req.body.name/*  password: hashedPassword */})
+
+        const hashedPassword = await bcrypt.hash(req.body.password, 10) 
+        users.push({name: req.body.name,  password: hashedPassword , ePost: req.body.ePost })
         fs.writeFileSync("users.json", JSON.stringify(users))
         res.json(users)
+        console.log(users)
         //users skickas till users.json
-       // res.status(201).send(hashedPassword)
+        //res.status(201).send(hashedPassword)
     }
-     
+
 })
+
+app.post('/api/login', async (req, res) => {
+
+    
+    let rawData = fs.readFileSync("./users.json")
+    let users = JSON.parse(rawData)
+    
+    const user = users.find(user => user.name === req.body.name)
+
+    if(!user || !await bcrypt.compare(req.body.password, user.password)) {
+        return res.status(401).json('Wrong password or username')
+    }
+    
+    if(req.session.id){
+        return res.json('Already logged in')
+    }
+    
+
+    req.session.id = uuid.v4()
+    req.session.username = user.name
+    req.session.loginDate = new Date()
+    res.json('successful login')
+
+})
+
