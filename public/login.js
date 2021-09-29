@@ -1,6 +1,7 @@
 //get a list of all users
 
 users = []
+
 document.getElementById('SignUp').addEventListener('click', newUsers)
 
 document.getElementById('loginBtn').addEventListener('click',  login)
@@ -20,7 +21,6 @@ async function getNewCustomerValues() {
     adress.value = "" */
 
 }
-
 
 
 async function fetchUsers() {
