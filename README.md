@@ -17,6 +17,14 @@ type the snippet below in your terminal in visual studio code.
 
 - npm install Express
 
+## uuid
+-npm install uuid
+
+## cookiesession
+-npm install cookiesession
+
+## Bcrypt
+-npm install Bcrypt
 ## start up
 -npm start 
 or
