@@ -21,10 +21,10 @@ type the snippet below in your terminal in visual studio code.
 -npm install uuid
 
 ## cookiesession
--npm install cookiesession
+-npm install cookie-session
 
 ## Bcrypt
--npm install Bcrypt
+-npm install bcrypt
 ## start up
 -npm start 
 or
