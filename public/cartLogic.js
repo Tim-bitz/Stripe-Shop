@@ -5,6 +5,7 @@ document.getElementById('homeBtn').addEventListener('click', productCard)
 }) */
 
 document.getElementById('cartBtn').addEventListener('click', async () => {
+
     const response = await fetch('/api/usercheck/', {
         method: "GET",
         headers: { "content-type": "application/json" },
@@ -12,9 +13,10 @@ document.getElementById('cartBtn').addEventListener('click', async () => {
 
     let result = await response.json()
 
-    if (result == false) {
+    if (result == false || null) {
         alert('Du behöver skapa ett konto för att handla på COOLSHOP')
         console.log("inte inloggad")
+        return
     } else {
 
         console.log("Inloggad")
