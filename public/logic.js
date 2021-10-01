@@ -4,29 +4,6 @@ const publicKey = "pk_test_51Jc4KaFYrsT4JzuLnxfWccQV75y84ogkUy5ptJoxmDaja5LIayde
 let cart = {}
 
 let stripe = Stripe(publicKey)
-//document.getElementById("testBtn").addEventListener("click", async () => {
-
-/*     if (Object.keys(testCar).length == 0) {
-        console.log("No products")
-    }
-
-    const response = await fetch("/api/session/new", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" }, 
-        body: JSON.stringify({
-            line_items: Object.values(testCart)
-        })
-    })
-    const { id } = await response.json()
-    localStorage.setItem("session", id)
-    alert(id)
-    stripe.redirectToCheckout({ sessionId: id }); */
-//})
-
-
-/* const verify = async () => {
-    
-} */
 
 const productsDB = {
     "LiquidIce": {
@@ -70,29 +47,6 @@ const productsDB = {
     }
 }
 
-/* let quantity = 0
-function addProduct() {
-    quantity++
-    cart = {
-        'Liquid Ice': {
-            name: "Liquid Ice",
-            description: 'boxed in liquid form',
-            price_data: {
-                currency: 'sek',
-                product_data: {
-                    name: 'boxedIce'
-                },
-                unit_amount: quantity
-            }
-        }
-    }
-    let getCart = localStorage.getItem('cart')
-
-    let setCart = localStorage.setItem("cart", JSON.stringify(cart))
-
-} */
-
-
 const addProduct = async (productKey) => {
     const product = productsDB[productKey];
 
@@ -135,7 +89,7 @@ const checkout = async () => {
     }
 }
 
-let list = "detta är en cool lista av våra is produkter"
+/* let list = "detta är en cool lista av våra is produkter"
 
 async function verify() {
     try {
@@ -151,38 +105,26 @@ async function verify() {
         const response = await fetch('/api/session/verify/' + sessionId, {
             method: "POST",
             headers: { 'Contenet-Type': 'application/json' },
-            body: JSON.stringify({ list: list })
-        })
-        /*     body:
-            JSON.stringify({
-                sessionId: sessionId 
-            }) */
+            /* body: JSON.stringify({ list: list }) */
+/*  })
 
-        const result = await response.json()
+const result = await response.json()
 
-        console.log(result)
-        const { paid } = await response.json()
+console.log(result)
+const { paid } = await response.json()
 
-        return paid;
+return paid;
 
-    } catch (err) {
-        console.error(err)
-        return false
-    }
+} catch (err) {
+console.error(err)
+return false
 }
+}  */
 
 
 
 async function main() {
 
-    //document.getElementById('addbtn').addEventListener('click', addProduct)
-    //document.getElementById('addbtn').addEventListener('click', () => addProduct('liquidIce'))
-
-
-    /*     if (document.getElementById('checkOutBtn')) {
-            document.getElementById('checkOutBtn').addEventListener('click', () => checkout())
-        } */
-    //console.log("isVerified", isVerified)
     localStorage.removeItem("session")
 }
 main()
