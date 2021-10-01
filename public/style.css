@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@500&Marker&display=swap');
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -8,8 +10,9 @@ header {
   background-color: rgb(0, 52, 95);
   display: flex;
   justify-content: space-evenly;
-  flex-direction: row;
+  flex-direction:column;
   align-items: center;
+  flex-wrap: wrap;
   padding: 15px;
 }
 body{
@@ -19,15 +22,20 @@ body{
   background-color:whitesmoke;
 }
 ul {
+  width: 80%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   list-style-type: none;
 }
 
+li button{
+  width:100%;
+}
+
 li a {
+  width:100%;
   display: block;
   padding: 14px 16px;
-  background-color: blueviolet;
 }
 
 img {
@@ -36,6 +44,7 @@ img {
 }
 
 input{
+  width:80%;
   font-size:100%;
   padding:5px;
   outline: none;
@@ -45,12 +54,27 @@ button{
   padding:10px 14px;
   border:none;
   background-color: rgb(112, 191, 255);
-  transition: 0.8s;
+  transition: 0.4s;
+  font-family: 'Jost', sans-serif;
+  font-weight: bold;
+  font-size: 1em;
 }
 
 button:hover{
   cursor: pointer;
   background-color: rgb(0, 93, 170);
+  color:rgb(112, 191, 255);
+}
+
+#loginBtn{
+  width:80%;
+}
+
+.menu{
+  width:100%;
+  display: flex;
+  justify-content:center;
+  flex-wrap: wrap;
 }
 
 #checkoutBtn{
@@ -58,10 +82,16 @@ button:hover{
 }
 #checkoutBtn:hover, #checkOutBtn:hover{
   background-color:rgb(28, 206, 132);
+  color:rgb(0, 93, 170);
 }
 
 #removebtn:hover{
   background-color: firebrick;
+}
+
+#logo{
+  width:30%;
+  min-width:250px;
 }
 .productCard {
   background-color: brown;
@@ -74,7 +104,13 @@ button:hover{
 .imgContainer {
   width: 50%;
 }
-
+.actionContainer{
+  display: flex;
+  flex-direction:row;
+}
+#indexContainer{
+  margin:0px 5px;
+}
 #mainContainer{
   width: 100%;
   display: flex;
@@ -92,7 +128,9 @@ button:hover{
 }
 
 #produktdiv{
-  width:600px;
+  width:50%;
+  max-width:400px;
+  min-width:260px;
 } 
 
 #productCard{

@@ -186,15 +186,4 @@ async function main() {
     localStorage.removeItem("session")
 }
 main()
-/* const addProduct = async (productKey) => {
-    const product = productsDB[productKey];
-    if (!product) {
-        throw new Error('Product does not Exist')
-    }
 
-
-    cart[productKey] = cart[productKey] || product;
-    cart[productKey].quantity = cart[productKey].quantity || 0;
-    cart[productKey].quantity++;
-    console.log({ cart, line_items: Object.values(testCart)})
-} */
