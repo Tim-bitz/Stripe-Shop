@@ -120,5 +120,6 @@ async function logout() {
     })
 
     alert('Du är nu utloggad')
+    location.reload()
 
 }
