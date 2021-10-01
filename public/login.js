@@ -97,19 +97,28 @@ async function login() {
     let result = await response.json()
 
     console.log(result)
+    
+    if(result == "successful login") {
+        alert("you are now logged in")
+    } else if(result == "Already logged in") {
+        alert("you are already logged in")
+    } else {
+        alert("Wrong password or username")
+    }
+
+    
     return result
 }
 
 document.getElementById('logoutBtn').addEventListener('click', logout)
 
 async function logout() {
-
+    
     const response = await fetch('/api/delete', {
         method: "DELETE",
         headers: { "content-type": "application/json" },
     })
 
-    console.log('hallihallå')
     alert('Du är nu utloggad')
 
 }

@@ -10,9 +10,9 @@ const uuid = require('uuid')
 
 let stripeCustomerID = {};
 
-
 let wholeSession = {};
 
+let theCookie
 
 const app = express()
 app.use("/api", express.json())
@@ -67,7 +67,6 @@ app.use(cookieSession({
 
 app.post('/api/login', async (req, res) => {
 
-
     let rawData = fs.readFileSync("./users.json")
     let users = JSON.parse(rawData)
 
@@ -77,7 +76,7 @@ app.post('/api/login', async (req, res) => {
         return res.status(401).json('Wrong password or username')
     }
 
-    if (req.session.id) {
+    if ( theCookie != null  /* req.session.id */) {
         return res.json('Already logged in')
     }
 
@@ -86,6 +85,7 @@ app.post('/api/login', async (req, res) => {
     req.session.loginDate = new Date()
     res.json('successful login')
 
+    theCookie = req.session
 })
 
 app.post('/v1/customers', async (req, res) => {
@@ -94,6 +94,7 @@ app.post('/v1/customers', async (req, res) => {
     });
     stripeCustomerID = customer.id
     res.json(stripeCustomerID)
+    console.log(customer)
 })
 
 app.get('/api/users', (req, res) => {
@@ -139,7 +140,11 @@ app.post('/api/users', async (req, res) => {
 
 app.get('/api/usercheck/', async (req, res) => {
     console.log("kör userCheck")
-    if (req.session.id) {
+    console.log(req.session.id)
+    console.log(req.session + "usercheck Id")
+    
+
+    if ( theCookie != null  /* req.session.id */) {
         return res.json(true)
     } else {
         return res.json(false)
@@ -160,12 +165,16 @@ app.get('/api/usercheck/', async (req, res) => {
 
 app.post('/api/recet', (req, res) => {
 
+    let today = new Date()
+    let date = today.getFullYear() + " " + (today.getMonth() +1 ) + "-" + today.getDate()
+
     let order = {
         customerID: "",
         orderId: wholeSession.id,
         amountTotal: wholeSession.amount_total,
-        stuff: "en cool text",
-        quantity: req.body.number,
+        stuff: date,
+        products: req.body.products,
+        orderId: wholeSession.payment_intent,
         userID: req.session.username
     }
 
@@ -205,8 +214,9 @@ app.get('/api/getrecet', (req, res) => {
 
 app.delete('/api/delete', async (req, res) => {
 
-    console.log('Delete session', req.session)
-    req.session.destroy
+    theCookie = null
+
+    res.json(true)
 
 })
 
