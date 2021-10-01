@@ -1,3 +1,7 @@
+window.addEventListener("load", () => {
+    //document.getElementById("mainContainer").innerText = ""
+})
+
 productCard()
 document.getElementById('homeBtn').addEventListener('click', productCard)
 /* document.getElementById('clearBtn').addEventListener('click', ()=>{
@@ -15,11 +19,8 @@ document.getElementById('cartBtn').addEventListener('click', async () => {
 
     if (result == false || null) {
         alert('Du behöver skapa ett konto för att handla på COOLSHOP')
-        console.log("inte inloggad")
         return
     } else {
-
-        console.log("Inloggad")
         cartCard()
 
     }
@@ -87,9 +88,7 @@ function productCard() {
 
             if (result == false) {
                 alert('Du behöver skapa ett konto för att handla på COOLSHOP')
-                console.log("inte inloggad")
             } else {
-                console.log("Inloggad")
                 addProduct(product.price_data.product_data.name)
             }
 
@@ -195,6 +194,7 @@ function cartCard() {
         clearcartbtn.innerText = "Nuke Cart"
         clearcartbtn.addEventListener('click', () => {
             localStorage.removeItem('cart')
+            cart = {}
             cartCard()
         })
 

@@ -13,13 +13,6 @@ async function getNewCustomerValues() {
     let adress = document.getElementById('adress')
 
     const userInfo = [userName.value, passWord.value, ePost.value, adress.value]
-    console.log(userInfo)
-    /* 
-        userName.value = ""
-        passWord.value = ""
-        ePost.value = ""
-        adress.value = "" */
-
 }
 
 
@@ -31,9 +24,6 @@ async function fetchUsers() {
 
     let result = await response.json()
 
-    console.log(result)
-
-    //users.push(result)
 }
 
 fetchUsers()
@@ -46,8 +36,6 @@ async function stripeCustomerID() {
     })
 
     let result = await response.json()
-
-    console.log(result)
 }
 
 async function newUsers() {
@@ -58,9 +46,6 @@ async function newUsers() {
     let ePost = document.getElementById('epost').value
     let adress = document.getElementById('adress').value
 
-
-
-    //const userInfo = [userName.value, passWord.value, ePost.value, adress.value]
     const response = await fetch('/api/users/', {
         method: "POST",
         headers: { "content-type": "application/json" },
@@ -74,10 +59,6 @@ async function newUsers() {
     })
 
     let result = await response.json()
-
-    console.log(result)
-
-    //users.push(result)
 }
 
 async function login() {
@@ -96,7 +77,6 @@ async function login() {
 
     let result = await response.json()
 
-    console.log(result)
     
     if(result == "successful login") {
         alert("you are now logged in")
