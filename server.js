@@ -94,7 +94,6 @@ app.post('/v1/customers', async (req, res) => {
     });
     stripeCustomerID = customer.id
     res.json(stripeCustomerID)
-    console.log(customer)
 })
 
 app.get('/api/users', (req, res) => {
@@ -130,7 +129,6 @@ app.post('/api/users', async (req, res) => {
         users.push({ name: req.body.name, password: hashedPassword, ePost: req.body.ePost, customerID: stripeCustomerID, })
         fs.writeFileSync("users.json", JSON.stringify(users))
         res.json(users)
-        console.log(users)
         //users skickas till users.json
         //res.status(201).send(hashedPassword)
     }
@@ -139,26 +137,12 @@ app.post('/api/users', async (req, res) => {
 
 
 app.get('/api/usercheck/', async (req, res) => {
-    console.log("kör userCheck")
-    console.log(req.session.id)
-    console.log(req.session + "usercheck Id")
-
 
     if (theCookie != null  /* req.session.id */) {
         return res.json(true)
     } else {
         return res.json(false)
     }
-
-    /* if (!req.session.id || req.session.id == null || req.session.id == undefined) {
-        console.log("142")
-        res.json(false)
-        return
-    } else {
-        console.log("session hamna i else", req.session.id)
-
-        return res.json(true)
-    } */
 
 
 })
@@ -167,8 +151,6 @@ app.post('/api/recet', (req, res) => {
 
     let today = new Date()
     let date = today.getFullYear() + " " + (today.getMonth() + 1) + "-" + today.getDate()
-
-    console.log(req.session.username)
 
     let order = {
         customerID: "",
@@ -180,16 +162,12 @@ app.post('/api/recet', (req, res) => {
         userID: req.session.username
     }
 
-
-    //    console.log('Post thing från success', session.id)
-
     try {
         let raw = fs.readFileSync("kvitton.json")
         let kvitton = JSON.parse(raw)
         kvitton.push(order)
         fs.writeFileSync("kvitton.json", JSON.stringify(kvitton))
         res.json("sparat")
-        console.log("en order", order, req.body.number)
     } catch (err) {
 
     }
@@ -204,7 +182,6 @@ app.get('/api/getrecet', (req, res) => {
     let kvittoList = []
 
     let kvitto = kvitton.map((kvitto) => {
-        console.log(kvitto.userID == req.session.username)
         if (kvitto.userID == req.session.username) {
             kvittoList.push(kvitto)
         }
