@@ -5,6 +5,7 @@ document.getElementById('homeBtn').addEventListener('click', productCard)
 }) */
 
 document.getElementById('cartBtn').addEventListener('click', async () => {
+
     const response = await fetch('/api/usercheck/', {
         method: "GET",
         headers: { "content-type": "application/json" },
@@ -12,9 +13,10 @@ document.getElementById('cartBtn').addEventListener('click', async () => {
 
     let result = await response.json()
 
-    if (result == false) {
+    if (result == false || null) {
         alert('Du behöver skapa ett konto för att handla på COOLSHOP')
         console.log("inte inloggad")
+        return
     } else {
 
         console.log("Inloggad")
@@ -109,96 +111,112 @@ function cartCard() {
     let cartDiv = document.getElementById('mainContainer')
     cartDiv.innerHTML = ""
     const product = getProducts()
+    
     if (!product) {
         let text = document.createElement('h3')
         text.innerText = "There is nothing added to the cart"
-
         cartDiv.append(text)
-        return
-    }
-    let cartItems = Object.values(product)
+        //return
+    } else {
+        let cartItems = Object.values(product)
+        
+        
+            let cardDiv = document.createElement('div')
+            cardDiv.id = "cardDiv"
+            
+            let produktdiv = document.createElement('div')
+            produktdiv.id = "produktdiv"
+            
+            let checkoutPrice = 0
+            
+            let clearcartbtn = document.createElement('button')
+            
+            
+            
+            for (let i = 0; i < cartItems.length; i++) {
+                const item = cartItems[i];
+                let product = document.createElement('div')
+                
+                let produktTitle = document.createElement('h3')
+                let produktAmount = document.createElement('p')
+                let produktPrice = document.createElement('p')
+                let br = document.createElement("br")
+                
+                product.style.margin = "10% 0px"
+                
+                produktTitle.style.marginTop = "20px"
+                produktTitle.style.borderBottom = "1px solid black"
+                produktTitle.innerText = item.price_data.product_data.name
+                produktAmount.innerText = "Amount: x" + item.quantity
+                produktPrice.style.padding = "10px 0px "
+                produktPrice.innerText = "price: " + item.price_data.unit_amount / 100 + " kr"
+                
+                
+                
+                checkoutPrice += item.quantity * item.price_data.unit_amount / 100
+                product.append(produktTitle, produktAmount, produktPrice, br)
+                produktdiv.append(product)
+                
+            }
+            
+            clearcartbtn.innerText = "Nuke Cart"
+            clearcartbtn.addEventListener('click', () => {
+                localStorage.removeItem('cart')
+                cartCard()
+            })
+            
+            
+            let priceTotal = document.createElement("div")
+            let checkoutBtn = document.createElement("button")
+            
+            let recetDiv = document.createElement("div")
+            recetDiv.id = "recetDiv" 
+            
+            checkoutBtn.id = "checkoutBtn"
+            
+            priceTotal.innerText = "Price Total: " + checkoutPrice
+            priceTotal.style.padding = "10px 0px"
+            checkoutBtn.innerText = "Checkout"
+            checkoutBtn.addEventListener('click', () => checkout())
+            
+            cardDiv.append(produktdiv, priceTotal, clearcartbtn, checkoutBtn)
+            cartDiv.append(cardDiv)
+            
+        }
+        
+        let getRecet = document.createElement("button")
 
+        getRecet.innerText = "Get prevoius orders"
+        
+        
+        getRecet.addEventListener('click', async () => {
+            
+            recetDiv.innerText = ""
+            
+            const response = await fetch('/api/getrecet', {
+                method: "GET",
+                headers: { "content-type": "application/json" }
+            })
+            
+            let result = await response.json()
+            
+            if(document.getElementById("recetText")) {
+                recetText.innerText = ""
+            }
+            
+            console.log(result)
+            result.map((item) => {
+                
+                let recetText = document.createElement('p')
+                console.log(item.stuff)
+                recetText.id = "recetText"
+                recetText.innerText = "Order Datum: " + item.stuff  + "| products: " + item.products + '| Summa:' + item.amountTotal / 100 + "kr " + "| order Id: " + item.orderId 
+                
+                recetDiv.append(recetText)
+            })
 
-    let cardDiv = document.createElement('div')
-    cardDiv.id = "cardDiv"
-
-    let produktdiv = document.createElement('div')
-    produktdiv.id = "produktdiv"
-
-    let checkoutPrice = 0
-
-    let clearcartbtn = document.createElement('button')
-
-    let getRecet = document.createElement('button')
-    getRecet.innerText = "Get prevoius orders"
-
-
-    for (let i = 0; i < cartItems.length; i++) {
-        const item = cartItems[i];
-        let product = document.createElement('div')
-
-        let produktTitle = document.createElement('h3')
-        let produktAmount = document.createElement('p')
-        let produktPrice = document.createElement('p')
-        let br = document.createElement("br")
-
-        product.style.margin = "10% 0px"
-
-        produktTitle.style.marginTop = "20px"
-        produktTitle.style.borderBottom = "1px solid black"
-        produktTitle.innerText = item.price_data.product_data.name
-        produktAmount.innerText = "Amount: x" + item.quantity
-        produktPrice.style.padding = "10px 0px "
-        produktPrice.innerText = "price: " + item.price_data.unit_amount / 100 + " kr"
-
-
-
-        checkoutPrice += item.quantity * item.price_data.unit_amount / 100
-        product.append(produktTitle, produktAmount, produktPrice, br)
-        produktdiv.append(product)
-
-    }
-
-    clearcartbtn.innerText = "Nuke Cart"
-    clearcartbtn.addEventListener('click', () => {
-        localStorage.removeItem('cart')
-        cartCard()
-    })
-
-    getRecet.addEventListener('click', async () => {
-
-        const response = await fetch('/api/getrecet', {
-            method: "GET",
-            headers: { "content-type": "application/json" }
+            cartDiv.append(getRecet, recetDiv)
         })
-
-        let result = await response.json()
-
-
-        console.log(result)
-        result.map((item) => {
-
-            console.log(item.stuff)
-            let recetText = document.createElement('p')
-            recetText.innerText = item.stuff + ' Summa:' + item.amountTotal / 100 + "kr"
-
-            cardDiv.append(recetText)
-        })
-
-    })
-
-    let priceTotal = document.createElement("div")
-    let checkoutBtn = document.createElement("button")
-
-
-    checkoutBtn.id = "checkoutBtn"
-
-    priceTotal.innerText = "Price Total: " + checkoutPrice
-    priceTotal.style.padding = "10px 0px"
-    checkoutBtn.innerText = "Checkout"
-    checkoutBtn.addEventListener('click', () => checkout())
-
-    cardDiv.append(produktdiv, priceTotal, clearcartbtn, checkoutBtn, getRecet)
-    cartDiv.appendChild(cardDiv)
-
-}
+        
+        
+    }

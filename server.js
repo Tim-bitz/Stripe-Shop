@@ -8,9 +8,11 @@ const cookieSession = require('cookie-session')
 const bcrypt = require('bcrypt')
 const uuid = require('uuid')
 
+let stripeCustomerID = {};
 
 let wholeSession = {};
 
+let theCookie
 
 const app = express()
 app.use("/api", express.json())
@@ -46,29 +48,134 @@ app.post("/api/session/verify/:id", async (req, res) => {
     //Kollar ifall kund gör köpet eller ej
     res.status(200).json({ id: session.id })
     res.json({ sessionId })
-    console.log(sessionId)
 })
 
 
 app.use(express.static("public"))
 
-app.listen(3000, () => {
-    console.log("server is running")
+
+
+//login
+
+app.use(cookieSession({
+    secret: '1234',
+    maxAge: 1000 * 60,
+    sameSite: 'strict',
+    httpOnly: true,
+    secure: false
+}))
+
+app.post('/api/login', async (req, res) => {
+
+    let rawData = fs.readFileSync("./users.json")
+    let users = JSON.parse(rawData)
+
+    const user = users.find(user => user.name === req.body.name)
+
+    if (!user || !await bcrypt.compare(req.body.password, user.password)) {
+        return res.status(401).json('Wrong password or username')
+    }
+
+    if ( theCookie != null  /* req.session.id */) {
+        return res.json('Already logged in')
+    }
+
+    req.session.id = uuid.v4()
+    req.session.username = user.name
+    req.session.loginDate = new Date()
+    res.json('successful login')
+
+    theCookie = req.session
+})
+
+app.post('/v1/customers', async (req, res) => {
+    const customer = await stripe.customers.create({
+        description: '',
+    });
+    stripeCustomerID = customer.id
+    res.json(stripeCustomerID)
+    console.log(customer)
+})
+
+app.get('/api/users', (req, res) => {
+
+    let data = fs.readFileSync("./users.json")
+    let userList = JSON.parse(data)
+    userNames = userList.map(name => {
+        return name.name
+    })
+    res.json(userNames)
+
+    //ska skicka tillbaka användarna från user.json
 })
 
 
+app.post('/api/users', async (req, res) => {
+
+    //hämta datan från users.json, spara i variablen users för att använda i följande if sats
+
+    let rawData = fs.readFileSync("./users.json")
+    let users = JSON.parse(rawData)
+
+    //kollar om användare finns
+    if (users.find(user => user.name === req.body.name)) {
+        //ska stämma av mot users.json genom en local users variabel
+        return res.status(409).json('Username already in use')
+    } else {
+        //ska pusha in ny användare i users variabel och sedan skicka users till users.json 
 
 
+        //kalla på create stripe customer här
+        const hashedPassword = await bcrypt.hash(req.body.password, 10)
+        users.push({ name: req.body.name, password: hashedPassword, ePost: req.body.ePost, customerID: stripeCustomerID, })
+        fs.writeFileSync("users.json", JSON.stringify(users))
+        res.json(users)
+        console.log(users)
+        //users skickas till users.json
+        //res.status(201).send(hashedPassword)
+    }
+
+})
+
+
+app.get('/api/usercheck/', async (req, res) => {
+    console.log("kör userCheck")
+    console.log(req.session.id)
+    console.log(req.session + "usercheck Id")
+    
+
+    if ( theCookie != null  /* req.session.id */) {
+        return res.json(true)
+    } else {
+        return res.json(false)
+    }
+
+    /* if (!req.session.id || req.session.id == null || req.session.id == undefined) {
+        console.log("142")
+        res.json(false)
+        return
+    } else {
+        console.log("session hamna i else", req.session.id)
+
+        return res.json(true)
+    } */
+
+
+})
 
 app.post('/api/recet', (req, res) => {
-    console.log(wholeSession, req.body.number,)
+
+    let today = new Date()
+    let date = today.getFullYear() + " " + (today.getMonth() +1 ) + "-" + today.getDate()
 
     let order = {
+        customerID: "",
         orderId: wholeSession.id,
         amountTotal: wholeSession.amount_total,
-        stuff: "en cool text",
-        quantity: req.body.number,
-        userID: "Niklas"
+        stuff: date,
+        products: req.body.products,
+        orderId: wholeSession.payment_intent,
+        userID: req.session.username
     }
 
 
@@ -87,98 +194,10 @@ app.post('/api/recet', (req, res) => {
 
 })
 
-//login
-
-
-
-app.use(cookieSession({
-    secret: '1234',
-    maxAge: 1000 * 60,
-    sameSite: 'strict',
-    httpOnly: true,
-    secure: false
-}))
-
-app.get('/api/users', (req, res) => {
-
-    let data = fs.readFileSync("./users.json")
-    let userList = JSON.parse(data)
-    userNames = userList.map(name => {
-        return name.name
-    })
-    res.json(userNames)
-
-    //ska skicka tillbaka användarna från user.json
-})
-
-
-app.post('/api/users', async (req, res) => {
-
-    console.log(req.body)
-
-    //hämta datan från users.json, spara i variablen users för att använda i följande if sats
-
-    let rawData = fs.readFileSync("./users.json")
-    let users = JSON.parse(rawData)
-    console.log(users)
-
-
-    //kollar om användare finns
-    if (users.find(user => user.name === req.body.name)) {
-        //ska stämma av mot users.json genom en local users variabel
-        return res.status(409).json('Username already in use')
-    } else {
-        //ska pusha in ny användare i users variabel och sedan skicka users till users.json 
-
-        const hashedPassword = await bcrypt.hash(req.body.password, 10)
-        users.push({ name: req.body.name, password: hashedPassword, ePost: req.body.ePost })
-        fs.writeFileSync("users.json", JSON.stringify(users))
-        res.json(users)
-        console.log(users)
-        //users skickas till users.json
-        //res.status(201).send(hashedPassword)
-    }
-
-})
-
-app.post('/api/login', async (req, res) => {
-
-
-    let rawData = fs.readFileSync("./users.json")
-    let users = JSON.parse(rawData)
-
-    const user = users.find(user => user.name === req.body.name)
-
-    if (!user || !await bcrypt.compare(req.body.password, user.password)) {
-        return res.status(401).json('Wrong password or username')
-    }
-
-    if (req.session.id) {
-        return res.json('Already logged in')
-    }
-
-    console.log(req.session)
-    req.session.id = uuid.v4()
-    req.session.username = user.name
-    req.session.loginDate = new Date()
-    res.json('successful login')
-
-})
-
-app.get('/api/usercheck/', async (req, res) => {
-    if (req.session.id) {
-        return res.json(true)
-    } else {
-        return res.json(false)
-    }
-
-})
-
 app.get('/api/getrecet', (req, res) => {
     let raw = fs.readFileSync("kvitton.json")
     let kvitton = JSON.parse(raw)
 
-    console.log(req.session)
 
     let kvittoList = []
 
@@ -191,4 +210,16 @@ app.get('/api/getrecet', (req, res) => {
 
     res.json(kvittoList)
 
+})
+
+app.delete('/api/delete', async (req, res) => {
+
+    theCookie = null
+
+    res.json(true)
+
+})
+
+app.listen(3000, () => {
+    console.log("server is running")
 })
